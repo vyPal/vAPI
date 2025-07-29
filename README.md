@@ -8,6 +8,8 @@ Sends a ping to the server to make sure it's running
 Checks whether the number is even
 ### `/is_odd/{number}`
 Checks whether the number is odd
+### `/is_even_or_odd/{number}`
+Checks if the number is even or odd
 
 ## Rate limits
 There are none (I was too lazy), so feel free to use as much as you want, but pls don't DDoS :D

@@ -6,6 +6,8 @@ use utoipa::{
 use utoipa_actix_web::AppExt;
 use utoipa_swagger_ui::SwaggerUi;
 
+use is_even_or_odd::IsEvenOrOdd;
+
 #[utoipa::path(
     responses(
         (status = 200, description = "Pings the server"),
@@ -42,6 +44,19 @@ async fn is_odd(path: web::Path<i64>) -> Result<String> {
     Ok((path.into_inner() % 2 != 0).to_string())
 }
 
+#[utoipa::path(
+    responses(
+        (status = 200, description = "Find out if a number is even or odd", body = String),
+    ),
+    params(
+        ("number", description = "The number to compare")
+    )
+)]
+#[get("/is_even_or_odd/{number}")]
+async fn is_even_or_odd_handler(path: web::Path<i64>) -> Result<String> {
+    Ok(path.into_inner().is_even_or_odd().to_string())
+}
+
 #[get("/{_:.*}")]
 async fn redir() -> impl Responder {
     Redirect::to("/swagger-ui/")
@@ -65,6 +80,7 @@ async fn main() -> std::io::Result<()> {
             .service(ping)
             .service(is_even)
             .service(is_odd)
+            .service(is_even_or_odd_handler)
             .openapi_service(|api| {
                 SwaggerUi::new("/swagger-ui/{_:.*}").url("/api-docs/openapi.json", api)
             })

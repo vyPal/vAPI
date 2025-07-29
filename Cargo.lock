@@ -803,6 +803,31 @@ dependencies = [
 ]
 
 [[package]]
+name = "is-even"
+version = "1.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "83d558b5cf9dbf1e6c224d9cea60821ad82e09092ade7aed6d83aef48ed382d0"
+dependencies = [
+ "is-odd",
+]
+
+[[package]]
+name = "is-even-or-odd"
+version = "1.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a3d396486b013d9fc8b4cdec014ebf05b4a80da6371fa38ac074e68eda271dc1"
+dependencies = [
+ "is-even",
+ "is-odd",
+]
+
+[[package]]
+name = "is-odd"
+version = "1.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "779a32fa1f0d6feb5a6894f909bd29252819bc7f85199acf47b3c1797b0fe134"
+
+[[package]]
 name = "is_terminal_polyfill"
 version = "1.70.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1580,6 +1605,7 @@ version = "0.1.0"
 dependencies = [
  "actix-web",
  "env_logger",
+ "is-even-or-odd",
  "utoipa",
  "utoipa-actix-web",
  "utoipa-swagger-ui",
