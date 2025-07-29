@@ -1,6 +1,7 @@
 FROM rust:1-alpine3.22 AS builder
 RUN apk add --no-cache musl-dev \
-    git
+    git \
+    curl
 
 WORKDIR /vapi
 COPY . /vapi
@@ -18,7 +19,7 @@ COPY --from=builder /vapi/vapi.release /bin/vapi
 
 WORKDIR /vapi
 
-RUN apk add --no-cache libgcc curl && chown 2613:2613 .
+RUN apk add --no-cache libgcc && chown 2613:2613 .
 
 ENV RUST_BACKTRACE=1
 EXPOSE 8080
