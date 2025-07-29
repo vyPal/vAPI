@@ -1,8 +1,7 @@
-use actix_web::{get, middleware::Logger, web, App, HttpResponse, HttpServer, Responder, Result};
+use actix_web::{get, middleware::Logger, web::{self, Redirect}, App, HttpResponse, HttpServer, Responder, Result};
 use env_logger::Env;
 use utoipa::{
-    openapi::security::{ApiKey, ApiKeyValue, SecurityScheme},
-    Modify, OpenApi,
+    OpenApi,
 };
 use utoipa_actix_web::AppExt;
 use utoipa_swagger_ui::SwaggerUi;
@@ -43,13 +42,16 @@ async fn is_odd(path: web::Path<i64>) -> Result<String> {
     Ok((path.into_inner() % 2 != 0).to_string())
 }
 
+#[get("/{_:.*}")]
+async fn redir() -> impl Responder {
+    Redirect::to("/swagger-ui/")
+}
+
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     #[derive(OpenApi)]
     #[openapi(
-        tags(
-            (name = "todo", description = "Todo management endpoints.")
-        ),
+        info(description = "A random API ig")
     )]
     struct ApiDoc;
 
@@ -67,6 +69,7 @@ async fn main() -> std::io::Result<()> {
                 SwaggerUi::new("/swagger-ui/{_:.*}").url("/api-docs/openapi.json", api)
             })
             .into_app()
+            .service(redir)
     })
     .bind(("0.0.0.0", 8080))?
     .run()
