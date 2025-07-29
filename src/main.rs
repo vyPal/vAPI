@@ -66,7 +66,7 @@ async fn redir() -> impl Responder {
 async fn main() -> std::io::Result<()> {
     #[derive(OpenApi)]
     #[openapi(
-        info(description = "A random API ig")
+        info(description = "A random API ig. Code available on https://github.com/vyPal/vAPI")
     )]
     struct ApiDoc;
 
@@ -76,7 +76,7 @@ async fn main() -> std::io::Result<()> {
         App::new()
             .into_utoipa_app()
             .openapi(ApiDoc::openapi())
-            .map(|app| app.wrap(Logger::default()))
+            .map(|app| app.wrap(Logger::new("%{X-Forwarded-For}i %r %s %b %{Referer}i %{User-Agent}i %T")))
             .service(ping)
             .service(is_even)
             .service(is_odd)
